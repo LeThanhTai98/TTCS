@@ -1,0 +1,500 @@
+#include "pch.h"
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+#include "linkList.h"
+#include "struct.h"
+using namespace std;
+
+int sosanhten(string str1 , string str2) {
+	int doDaiStr1 = str1.size();
+	int doDaiStr2 = str2.size();
+	int dem;
+	if (doDaiStr2 < doDaiStr1)
+		 dem = doDaiStr2;
+	else  dem = doDaiStr1;
+	for (int i = 0;i < dem;i++) {
+		if (str1[i] > str2[i]) return 1;
+		else if (str1[i] < str2[i]) return 0;
+	}
+	if (doDaiStr1 > doDaiStr2) return 1;
+	return 0;
+}
+
+
+
+void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef);
+
+ostream& operator<<(ostream& os, const nhanvien& item);
+
+linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21; }
+
+linkList::~linkList() {
+	deleteList(&roots);
+}
+
+void linkList::insert(nhanvien item) {
+	// so sanh de tim chuoi dai nhat 
+	int doDaiHoTen = item.ho_va_ten.size();
+	if (max_ten < doDaiHoTen) max_ten = doDaiHoTen;
+
+	//convert so sang string de so sanh 
+	
+	ostringstream a;
+	a << item.luong;
+	int doDaiLuong = a.str().size();
+	if (max_luong < doDaiLuong) max_luong = doDaiLuong;
+
+	int doDaiChucVu = item.chucvu_chu.size();
+	if (max_chucvu < doDaiChucVu) max_chucvu = doDaiChucVu;
+
+
+
+	tree_node *p = new tree_node;
+	p->left = NULL;
+
+	p->data = item;
+
+	if (type_sort == 0) {
+
+		tree_node *parent = NULL;
+		if (is_empty()) {
+			roots = p;
+			last = p;
+			return;
+		}
+		tree_node *ptr = roots;
+
+		last->left = p;
+		last = last->left;
+
+	}
+	else {
+		tree_node *parent = NULL;
+		tree_node *ptr = getRoots();
+
+
+		   if (type_sort == 1)
+
+			 do {
+				if (ptr->data.luong == p->data.luong){
+
+				string tam1 = ptr->data.ten;
+				string tam2 = p->data.ten;
+
+				if (sosanhten (tam1,tam2) <= 0) {
+					 parent = ptr;
+					ptr = ptr->left;
+				   }
+				  else {
+					break;
+				  }
+			    }
+				else
+					if (ptr->data.luong > p->data.luong) {
+						 parent = ptr;
+						ptr = ptr->left;
+					}
+					else {	
+						break;
+					}
+				
+	       }while (ptr != NULL );
+
+		 if (type_sort == 2)
+			 do {
+				 if (ptr->data.chucvu == p->data.chucvu) {
+
+					 string tam1 = ptr->data.ten;
+					 string tam2 = p->data.ten;
+
+					 if (sosanhten(tam1, tam2) <= 0) {
+						 parent = ptr;
+						 ptr = ptr->left;
+					 }
+					 else {
+						 break;
+					 }
+				 }
+				 else
+					 if (ptr->data.chucvu > p->data.chucvu) {
+						 parent = ptr;
+						 ptr = ptr->left;
+					 }
+					 else {
+						 break;
+					 }
+
+			 } while (ptr != NULL);
+
+
+		if (type_sort == 3) {
+			do{
+
+			if (ptr->data.ngaythangnamsinh[2] < p->data.ngaythangnamsinh[2]) {
+				parent = ptr;
+				ptr = ptr->left;
+			}
+			else if (ptr->data.ngaythangnamsinh[2] > p->data.ngaythangnamsinh[2]) {
+
+				break;
+			}
+			else if (ptr->data.ngaythangnamsinh[1] < p->data.ngaythangnamsinh[1]) {
+				parent = ptr;
+				ptr = ptr->left;
+			}
+			else if (ptr->data.ngaythangnamsinh[1] > p->data.ngaythangnamsinh[1]) {
+				break;
+			}
+			else if (ptr->data.ngaythangnamsinh[0] < p->data.ngaythangnamsinh[0]) {
+				parent = ptr;
+				ptr = ptr->left;
+			}
+			else if (ptr->data.ngaythangnamsinh[0] > p->data.ngaythangnamsinh[0]) {
+				break;
+			}
+			else if (sosanhten(ptr->data.ten,p->data.ten) <= 0) {
+				parent = ptr;
+				ptr = ptr->left;
+			}
+			else {
+				break;
+			}
+			
+			}while (ptr != NULL);
+
+
+
+		}
+		if (parent != NULL) {
+			tree_node *tem_node = parent->left;
+			parent->left = p;
+			p->left = tem_node;
+		}
+		else {
+			p->left = roots;
+			roots = p;
+		}
+	}
+}
+
+
+
+void linkList::insert(nhanvien item, int loca) {
+	tree_node *p = new tree_node;
+	p->left = NULL;
+
+	p->data = item;
+	tree_node *parent = NULL;
+	if (is_empty()) {
+		roots = p;
+		return;
+	}
+	tree_node *ptr = roots;
+	int count = 0;
+	parent = ptr;
+	while (ptr != NULL and count < loca - 1) {
+		parent = ptr;
+		ptr = ptr->left;
+		count++;
+	}
+	tree_node *tem_node = parent->left;
+	parent->left = p;
+	p->left = tem_node;
+}
+
+
+tree_node* linkList::getRoots() {
+	return roots;
+}
+
+
+tree_node* linkList::getLast() {
+	return last;
+}
+string taoKhoangTrong(int soKhoantrong) {
+	string traVe;
+	for (int i = 0;i < soKhoantrong;i++)
+		traVe += ' ';
+	return traVe;
+}
+
+void linkList::in_file() {
+	ofstream myfile;
+	myfile.open("example.txt");
+	const char separator = ' ';
+	const char separator_2 = '|';
+	if (myfile.is_open())
+	{
+		string hoTen, chuc, ngaythang, heSoLuong;
+		hoTen = "ho va ten";
+		chuc = "chuc vu";
+		ngaythang = "ngay thang nam sinh";
+		heSoLuong = "he so luong";
+
+		myfile << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+
+		//left canh le trai / right canh le phai 
+		myfile << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
+			<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
+		// in duong ket thuc
+		myfile << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+		show_2(roots, myfile);
+	}
+	myfile.close();
+}
+
+void linkList::show_2(tree_node *ptr, ofstream &myfile) {
+	if (ptr != NULL) {
+		const char separator = ' ';
+		const char separator_2 = '|';
+		// noi ngay thang nam sinh lai thanh ngay/thang/nam
+		ostringstream ss, luong;
+		ss << ptr->data.ngaythangnamsinh[0] << '/' << ptr->data.ngaythangnamsinh[1] << '/' << ptr->data.ngaythangnamsinh[2];
+		luong << ptr->data.luong;
+
+
+		//left canh le trai / right canh le phai 
+		myfile << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size()) << separator_2 << ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) << separator_2
+			<< ss.str() << taoKhoangTrong(max_ngay - ss.str().size()) << separator_2 << ptr->data.luong << taoKhoangTrong(max_luong - luong.str().size()) << separator_2 << "\n";
+		// in duong ket thuc 1 bo 
+		myfile << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+		show_2(ptr->left, myfile);
+	}
+}
+
+//in bt thuong
+void linkList::show_1() {
+	
+	tree_node *ptr = roots;
+
+	const char separator = ' ';
+	const char separator_2 = '|';
+	// noi ngay thang nam sinh lai thanh ngay/thang/nam
+	string hoTen, chuc, ngaythang, heSoLuong;
+	hoTen = "ho va ten";
+	chuc = "chuc vu";
+	ngaythang = "ngay thang nam sinh";
+	heSoLuong = "he so luong";
+
+	cout << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
+		<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
+	// in duong ket thuc 1 bo 
+	cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+	 
+
+	while (ptr != NULL) {
+		ostringstream ss,luong;
+		ss << ptr->data.ngaythangnamsinh[0] << '/' << ptr->data.ngaythangnamsinh[1] << '/' << ptr->data.ngaythangnamsinh[2];
+		luong << ptr->data.luong;
+
+
+		cout << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size())  << separator_2<< ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) <<separator_2  
+	<< ss.str() << taoKhoangTrong(max_ngay - ss.str().size())  << separator_2  << ptr->data.luong << taoKhoangTrong(max_luong - luong.str().size()) << separator_2 << "\n";
+		// in duong ket thuc 1 bo 
+		cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+
+		ptr = ptr->left;
+
+	}
+}
+
+
+
+
+void linkList::MergeSort(tree_node** headRef)
+{
+	tree_node* head = *headRef;
+	tree_node* a;
+	tree_node* b;
+
+
+	if ((head == NULL) || (head->left == NULL)) {
+		return;
+	}
+
+
+	FrontBackSplit(head, &a, &b);
+
+
+	MergeSort(&a);
+	MergeSort(&b);
+
+
+
+	*headRef = SortedMerge(a, b, type_sort);
+
+}
+
+// so sanh vs noi mang 
+tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
+{
+	tree_node* result = NULL;
+
+	if (a == NULL)
+		return (b);
+	else if (b == NULL)
+		return (a);
+	//sort theo luong neu bang bang nhau sort theo ten
+	if (type_sort == 1) {
+		if (a->data.luong == b->data.luong) {
+			string tam1 = a->data.ten;
+			string tam2 = b->data.ten;
+			if (sosanhten(tam1, tam2) <= 0) {
+				result = a;
+
+				result->left = SortedMerge(a->left, b, type_sort);
+			}
+			else {
+				result = b;
+
+				result->left = SortedMerge(a, b->left, type_sort);
+			}
+		}
+		else
+	 if (a->data.luong > b->data.luong) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+
+		    }
+		    else {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+
+		        }
+	}
+	// sort theo chuc vu so neu bang bang nhau sort theo ten
+	if (type_sort == 2) {
+		if (a->data.chucvu == b->data.chucvu) {
+			string tam1 = a->data.ten;
+			string tam2 = b->data.ten;
+			if (sosanhten(tam1, tam2) <= 0) {
+				result = a;
+
+				result->left = SortedMerge(a->left, b, type_sort);
+			}
+			else {
+				result = b;
+
+				result->left = SortedMerge(a, b->left, type_sort);
+			}
+		}
+		else
+			if (a->data.chucvu > b->data.chucvu) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+
+		    }
+		       else {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+
+		       }
+	}
+	// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
+	if (type_sort == 3) {
+		if (a->data.ngaythangnamsinh[2] < b->data.ngaythangnamsinh[2]) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+		}
+		else if (a->data.ngaythangnamsinh[2] > b->data.ngaythangnamsinh[2]) {
+		 
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+		
+		}
+		else if (a->data.ngaythangnamsinh[1] < b->data.ngaythangnamsinh[1]) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+		}
+		else if (a->data.ngaythangnamsinh[1] > b->data.ngaythangnamsinh[1]) {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+		}
+		else if (a->data.ngaythangnamsinh[0] < b->data.ngaythangnamsinh[0]) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+		}
+		else if (a->data.ngaythangnamsinh[0] > b->data.ngaythangnamsinh[0]) {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+		}
+		else if (sosanhten(a->data.ten, b->data.ten) <= 0) {
+			result = a;
+
+			result->left = SortedMerge(a->left, b, type_sort);
+		}
+		else {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+		}
+
+	}
+
+
+	return (result);
+}
+
+// tach mang ra 2 con 
+void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef)
+{
+	tree_node* fast;
+	tree_node* slow;
+	slow = source;
+	fast = source->left;
+
+
+	while (fast != NULL) {
+		fast = fast->left;
+		if (fast != NULL) {
+			slow = slow->left;
+			fast = fast->left;
+		}
+	}
+
+
+	*frontRef = source;
+	*backRef = slow->left;
+	slow->left = NULL;
+}
+
+void linkList::Sort(int const &type) {
+	type_sort = type;
+	MergeSort(&roots);
+}
+
+void linkList::deleteList(tree_node** headRef) {
+	tree_node* current = *headRef;
+	tree_node* left;
+	while (current != NULL) {
+		left = current->left;
+		delete(current);
+		current = left;
+	}
+	*headRef = NULL;
+}
+
+void linkList::setLast() {
+	tree_node *current = roots;
+	
+	while (current != NULL) {
+		if (current->left == NULL) last = current;
+		current = current->left;
+
+	}
+}
