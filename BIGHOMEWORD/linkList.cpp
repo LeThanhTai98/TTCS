@@ -10,12 +10,12 @@
 #include "struct.h"
 using namespace std;
 
-int sosanhten(string str1 , string str2) {
+int sosanhten(string str1, string str2) {
 	int doDaiStr1 = str1.size();
 	int doDaiStr2 = str2.size();
 	int dem;
 	if (doDaiStr2 < doDaiStr1)
-		 dem = doDaiStr2;
+		dem = doDaiStr2;
 	else  dem = doDaiStr1;
 	for (int i = 0;i < dem;i++) {
 		if (str1[i] > str2[i]) return 1;
@@ -24,6 +24,35 @@ int sosanhten(string str1 , string str2) {
 	if (doDaiStr1 > doDaiStr2) return 1;
 	return 0;
 }
+
+
+bool soSanhNgayThangNam(nhanvien data1 , nhanvien data2) {
+	if (data1.ngaythangnamsinh[2] < data2.ngaythangnamsinh[2]) {
+		return true;
+	}
+	else if (data1.ngaythangnamsinh[2] > data2.ngaythangnamsinh[2]) {
+		return false;
+		
+	}
+	else if (data1.ngaythangnamsinh[1] < data2.ngaythangnamsinh[1]) {
+		return true;
+	}
+	else if (data1.ngaythangnamsinh[1] > data2.ngaythangnamsinh[1]) {
+		return false;
+	}
+	else if (data1.ngaythangnamsinh[0] < data2.ngaythangnamsinh[0]) {
+		return true;
+	}
+	else if (data1.ngaythangnamsinh[0] > data2.ngaythangnamsinh[0]) {
+		return false;
+	}
+	else if (sosanhten(data1.ten,data2.ten) <= 0) {
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
@@ -134,37 +163,16 @@ void linkList::insert(nhanvien item) {
 
 		if (type_sort == 3) {
 			do{
+				if (soSanhNgayThangNam(ptr->data, p->data))
+				{
+					parent = ptr;
+					ptr = ptr->left;
+				}
+				else
+				{
+					break;
+				}
 
-			if (ptr->data.ngaythangnamsinh[2] < p->data.ngaythangnamsinh[2]) {
-				parent = ptr;
-				ptr = ptr->left;
-			}
-			else if (ptr->data.ngaythangnamsinh[2] > p->data.ngaythangnamsinh[2]) {
-
-				break;
-			}
-			else if (ptr->data.ngaythangnamsinh[1] < p->data.ngaythangnamsinh[1]) {
-				parent = ptr;
-				ptr = ptr->left;
-			}
-			else if (ptr->data.ngaythangnamsinh[1] > p->data.ngaythangnamsinh[1]) {
-				break;
-			}
-			else if (ptr->data.ngaythangnamsinh[0] < p->data.ngaythangnamsinh[0]) {
-				parent = ptr;
-				ptr = ptr->left;
-			}
-			else if (ptr->data.ngaythangnamsinh[0] > p->data.ngaythangnamsinh[0]) {
-				break;
-			}
-			else if (sosanhten(ptr->data.ten,p->data.ten) <= 0) {
-				parent = ptr;
-				ptr = ptr->left;
-			}
-			else {
-				break;
-			}
-			
 			}while (ptr != NULL);
 
 
@@ -401,49 +409,20 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 	}
 	// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
 	if (type_sort == 3) {
-		if (a->data.ngaythangnamsinh[2] < b->data.ngaythangnamsinh[2]) {
+
+		if(soSanhNgayThangNam(a->data,b->data))
+		{
 			result = a;
 
 			result->left = SortedMerge(a->left, b, type_sort);
 		}
-		else if (a->data.ngaythangnamsinh[2] > b->data.ngaythangnamsinh[2]) {
-		 
+		else 
+		{
 			result = b;
 
 			result->left = SortedMerge(a, b->left, type_sort);
+		}
 		
-		}
-		else if (a->data.ngaythangnamsinh[1] < b->data.ngaythangnamsinh[1]) {
-			result = a;
-
-			result->left = SortedMerge(a->left, b, type_sort);
-		}
-		else if (a->data.ngaythangnamsinh[1] > b->data.ngaythangnamsinh[1]) {
-			result = b;
-
-			result->left = SortedMerge(a, b->left, type_sort);
-		}
-		else if (a->data.ngaythangnamsinh[0] < b->data.ngaythangnamsinh[0]) {
-			result = a;
-
-			result->left = SortedMerge(a->left, b, type_sort);
-		}
-		else if (a->data.ngaythangnamsinh[0] > b->data.ngaythangnamsinh[0]) {
-			result = b;
-
-			result->left = SortedMerge(a, b->left, type_sort);
-		}
-		else if (sosanhten(a->data.ten, b->data.ten) <= 0) {
-			result = a;
-
-			result->left = SortedMerge(a->left, b, type_sort);
-		}
-		else {
-			result = b;
-
-			result->left = SortedMerge(a, b->left, type_sort);
-		}
-
 	}
 
 

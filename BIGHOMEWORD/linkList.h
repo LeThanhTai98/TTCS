@@ -66,7 +66,6 @@ public:
 	// goi sort 1 de sort theo luong , 2 chuc vu , 3 ngay thang nam sinh 
 	void  Sort(const int&);
 
-
 	// ham cua merger sort
 	tree_node* SortedMerge(tree_node* a, tree_node* b, int type_sort);
 
