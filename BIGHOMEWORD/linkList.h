@@ -78,8 +78,8 @@ public:
 	int getMax_Luong() { return max_luong; }
 	
 	friend class xuatNhapFile;
-	friend  void  xuatFile(linkList roots);
+	
 	
 };
 
-int sosanhten(string str1, string str2);
+int sosanhten(string ten1, string ten2, string hoten1, string hoten2);
