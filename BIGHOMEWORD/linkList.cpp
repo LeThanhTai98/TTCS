@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <iostream>
+
 #include <string>
 #include <string.h>
 #include <sstream>
@@ -232,8 +232,10 @@ string taoKhoangTrong(int soKhoantrong) {
 }
 
 void linkList::in_file() {
+
 	ofstream myfile;
-	myfile.open("example.txt");
+	myfile.open("example_1.txt");
+	
 	const char separator = ' ';
 	const char separator_2 = '|';
 	if (myfile.is_open())
