@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include <iostream>
+
 #include <string>
 #include <string.h>
 #include <sstream>
@@ -9,8 +9,10 @@
 #include <fstream>
 #include <vector>
 #include "struct.h"
+#include "xuatNhapFile.h"
 using namespace std;
 
+class xuatNhapFile;
 class linkList
 {
 public:
@@ -30,6 +32,10 @@ private:
 	int max_chucvu;
 	//so ky tu toi da cua ngay thang nam sinh 
 	int max_ngay;
+	//tong so luong phan tu 
+	int tongSoLuonPhanTu;
+	//so ky tu toi da cua tong so luong phan tu 
+	int max_tongSoLuonPhanTu;
 	// cai nay xai ben trong in file 
 	void show_2(tree_node *item, ofstream &myfile);
 
@@ -74,7 +80,10 @@ public:
 
 	int getMax_Ten() { return max_ten; }
 	int getMax_Luong() { return max_luong; }
-
+	
+	friend class xuatNhapFile;
+	
 	
 };
 
+int sosanhten(string ten1, string ten2, string hoten1, string hoten2);

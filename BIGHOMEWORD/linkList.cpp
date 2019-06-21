@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <iostream>
+
 #include <string>
 #include <string.h>
 #include <sstream>
@@ -9,19 +9,43 @@
 #include "linkList.h"
 #include "struct.h"
 using namespace std;
-
-int sosanhten(string str1, string str2) {
-	int doDaiStr1 = str1.size();
-	int doDaiStr2 = str2.size();
+int doDaiCuaSoInt(int so) {
+	int dem = 0;
+	if (so == 0) return 1;
+	while (so != 0 ) {
+		so = so / 10;
+		dem++;
+	}
+	return dem;
+}
+int sosanhten(string ten1, string ten2,string hoten1 , string hoten2) {
+	int doDaiStr1 = ten1.size();
+	int doDaiStr2 = ten2.size();
 	int dem;
 	if (doDaiStr2 < doDaiStr1)
 		dem = doDaiStr2;
 	else  dem = doDaiStr1;
 	for (int i = 0;i < dem;i++) {
-		if (str1[i] > str2[i]) return 1;
-		else if (str1[i] < str2[i]) return 0;
+		if (ten1[i] > ten2[i]) return 1;
+		else if (ten1[i] < ten2[i]) return 0;
 	}
 	if (doDaiStr1 > doDaiStr2) return 1;
+
+	if (doDaiStr1 == doDaiStr2) {
+	
+		int doDai1 = hoten1.size();
+		int doDai2 = hoten2.size();
+		int dem;
+		if (doDai2 < doDai1)
+			dem = doDai2;
+		else  dem = doDai1;
+		for (int i = 0;i < dem;i++) {
+			if (hoten1[i] > hoten2[i]) return 1;
+			else if (hoten1[i] < hoten2[i]) return 0;
+		}
+		if (doDaiStr1 > doDaiStr2) return 1;
+		return 0;
+	}
 	return 0;
 }
 
@@ -46,7 +70,7 @@ bool soSanhNgayThangNam(nhanvien data1 , nhanvien data2) {
 	else if (data1.ngaythangnamsinh[0] > data2.ngaythangnamsinh[0]) {
 		return false;
 	}
-	else if (sosanhten(data1.ten,data2.ten) <= 0) {
+	else if (sosanhten(data1.ten,data2.ten, data1.ho_va_ten , data2.ho_va_ten) <= 0) {
 		return true;
 	}
 	return false;
@@ -60,7 +84,7 @@ void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef
 
 ostream& operator<<(ostream& os, const nhanvien& item);
 
-linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21; }
+linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21;max_tongSoLuonPhanTu = 5; }
 
 linkList::~linkList() {
 	deleteList(&roots);
@@ -112,10 +136,11 @@ void linkList::insert(nhanvien item) {
 			 do {
 				if (ptr->data.luong == p->data.luong){
 
-				string tam1 = ptr->data.ten;
-				string tam2 = p->data.ten;
-
-				if (sosanhten (tam1,tam2) <= 0) {
+				string ten1 = ptr->data.ten;
+				string ten2 = p->data.ten;
+				string hoten1 = ptr->data.ho_va_ten;
+			    string hoten2 = p->data.ho_va_ten;
+				if (sosanhten (ten1, ten2, hoten1, hoten2) <= 0) {
 					 parent = ptr;
 					ptr = ptr->left;
 				   }
@@ -138,10 +163,11 @@ void linkList::insert(nhanvien item) {
 			 do {
 				 if (ptr->data.chucvu == p->data.chucvu) {
 
-					 string tam1 = ptr->data.ten;
-					 string tam2 = p->data.ten;
-
-					 if (sosanhten(tam1, tam2) <= 0) {
+					 string ten1 = ptr->data.ten;
+					 string ten2 = p->data.ten;
+					 string hoten1 = ptr->data.ho_va_ten;
+					 string hoten2 = p->data.ho_va_ten;
+					 if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
 						 parent = ptr;
 						 ptr = ptr->left;
 					 }
@@ -178,6 +204,23 @@ void linkList::insert(nhanvien item) {
 
 
 		}
+
+		if (type_sort == 4) {
+			do {
+				string ten1 = ptr->data.ten;
+				string ten2 = p->data.ten;
+				string hoten1 = ptr->data.ho_va_ten;
+				string hoten2 = p->data.ho_va_ten;
+				if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+					parent = ptr;
+					ptr = ptr->left;
+				}
+				else {
+					break;
+				}
+
+			} while (ptr != NULL);
+		}
 		if (parent != NULL) {
 			tree_node *tem_node = parent->left;
 			parent->left = p;
@@ -187,6 +230,7 @@ void linkList::insert(nhanvien item) {
 			p->left = roots;
 			roots = p;
 		}
+		tongSoLuonPhanTu++;
 	}
 }
 
@@ -232,21 +276,25 @@ string taoKhoangTrong(int soKhoantrong) {
 }
 
 void linkList::in_file() {
+
 	ofstream myfile;
-	myfile.open("example.txt");
+	myfile.open("example_1.txt");
+	
 	const char separator = ' ';
 	const char separator_2 = '|';
 	if (myfile.is_open())
 	{
 		string hoTen, chuc, ngaythang, heSoLuong;
+		
 		hoTen = "ho va ten";
 		chuc = "chuc vu";
 		ngaythang = "ngay thang nam sinh";
 		heSoLuong = "he so luong";
+		
 
-		myfile << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+		myfile << '+' << string( max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
 
-		//left canh le trai / right canh le phai 
+		
 		myfile << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
 			<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
 		// in duong ket thuc
@@ -283,31 +331,34 @@ void linkList::show_1() {
 	const char separator = ' ';
 	const char separator_2 = '|';
 	// noi ngay thang nam sinh lai thanh ngay/thang/nam
-	string hoTen, chuc, ngaythang, heSoLuong;
+	string hoTen, chuc, ngaythang, heSoLuong, stt;
+	stt = "STT";
 	hoTen = "ho va ten";
 	chuc = "chuc vu";
 	ngaythang = "ngay thang nam sinh";
 	heSoLuong = "he so luong";
+	if (max_tongSoLuonPhanTu < doDaiCuaSoInt(tongSoLuonPhanTu)) max_tongSoLuonPhanTu = doDaiCuaSoInt(tongSoLuonPhanTu);
 
-	cout << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
+	cout << separator_2 << stt << taoKhoangTrong(max_tongSoLuonPhanTu - stt.size()) << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
 		<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
 	// in duong ket thuc 1 bo 
-	cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+	cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
 	 
-
+	int dem = 1;
 	while (ptr != NULL) {
 		ostringstream ss,luong;
 		ss << ptr->data.ngaythangnamsinh[0] << '/' << ptr->data.ngaythangnamsinh[1] << '/' << ptr->data.ngaythangnamsinh[2];
 		luong << ptr->data.luong;
+		
+		int doDaiDem = doDaiCuaSoInt(dem);
 
-
-		cout << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size())  << separator_2<< ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) <<separator_2  
+		cout << separator_2 << dem << taoKhoangTrong(max_tongSoLuonPhanTu - doDaiDem) << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size())  << separator_2<< ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) <<separator_2
 	<< ss.str() << taoKhoangTrong(max_ngay - ss.str().size())  << separator_2  << ptr->data.luong << taoKhoangTrong(max_luong - luong.str().size()) << separator_2 << "\n";
 		// in duong ket thuc 1 bo 
-		cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+		cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
 
 		ptr = ptr->left;
-
+		dem++;
 	}
 }
 
@@ -350,9 +401,12 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 	//sort theo luong neu bang bang nhau sort theo ten
 	if (type_sort == 1) {
 		if (a->data.luong == b->data.luong) {
-			string tam1 = a->data.ten;
-			string tam2 = b->data.ten;
-			if (sosanhten(tam1, tam2) <= 0) {
+			string ten1 = a->data.ten;
+			string ten2 = b->data.ten;
+			string hoten1 = a->data.ho_va_ten;
+			string hoten2 = b->data.ho_va_ten;
+	
+			if (sosanhten(ten1, ten2, hoten1, hoten2 )<= 0) {
 				result = a;
 
 				result->left = SortedMerge(a->left, b, type_sort);
@@ -380,9 +434,12 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 	// sort theo chuc vu so neu bang bang nhau sort theo ten
 	if (type_sort == 2) {
 		if (a->data.chucvu == b->data.chucvu) {
-			string tam1 = a->data.ten;
-			string tam2 = b->data.ten;
-			if (sosanhten(tam1, tam2) <= 0) {
+			string ten1 = a->data.ten;
+			string ten2 = b->data.ten;
+			string hoten1 = a->data.ho_va_ten;
+			string hoten2 = b->data.ho_va_ten;
+
+			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
 				result = a;
 
 				result->left = SortedMerge(a->left, b, type_sort);
@@ -424,7 +481,24 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 		}
 		
 	}
+	if (type_sort == 4) {
+		string ten1 = a->data.ten;
+		string ten2 = b->data.ten;
+		string hoten1 = a->data.ho_va_ten;
+		string hoten2 = b->data.ho_va_ten;
 
+		if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) 
+			{
+				result = a;
+
+				result->left = SortedMerge(a->left, b, type_sort);
+			}
+		else {
+			result = b;
+
+			result->left = SortedMerge(a, b->left, type_sort);
+		}
+	}
 
 	return (result);
 }
