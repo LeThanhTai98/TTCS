@@ -9,15 +9,7 @@
 #include "linkList.h"
 #include "struct.h"
 using namespace std;
-int doDaiCuaSoInt(int so) {
-	int dem = 0;
-	if (so == 0) return 1;
-	while (so != 0 ) {
-		so = so / 10;
-		dem++;
-	}
-	return dem;
-}
+
 int sosanhten(string ten1, string ten2,string hoten1 , string hoten2) {
 	int doDaiStr1 = ten1.size();
 	int doDaiStr2 = ten2.size();
@@ -84,7 +76,7 @@ void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef
 
 ostream& operator<<(ostream& os, const nhanvien& item);
 
-linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21;max_tongSoLuonPhanTu = 5; }
+linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21; }
 
 linkList::~linkList() {
 	deleteList(&roots);
@@ -230,7 +222,6 @@ void linkList::insert(nhanvien item) {
 			p->left = roots;
 			roots = p;
 		}
-		tongSoLuonPhanTu++;
 	}
 }
 
@@ -285,16 +276,14 @@ void linkList::in_file() {
 	if (myfile.is_open())
 	{
 		string hoTen, chuc, ngaythang, heSoLuong;
-		
 		hoTen = "ho va ten";
 		chuc = "chuc vu";
 		ngaythang = "ngay thang nam sinh";
 		heSoLuong = "he so luong";
-		
 
-		myfile << '+' << string( max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
+		myfile << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
 
-		
+		//left canh le trai / right canh le phai 
 		myfile << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
 			<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
 		// in duong ket thuc
@@ -331,34 +320,31 @@ void linkList::show_1() {
 	const char separator = ' ';
 	const char separator_2 = '|';
 	// noi ngay thang nam sinh lai thanh ngay/thang/nam
-	string hoTen, chuc, ngaythang, heSoLuong, stt;
-	stt = "STT";
+	string hoTen, chuc, ngaythang, heSoLuong;
 	hoTen = "ho va ten";
 	chuc = "chuc vu";
 	ngaythang = "ngay thang nam sinh";
 	heSoLuong = "he so luong";
-	if (max_tongSoLuonPhanTu < doDaiCuaSoInt(tongSoLuonPhanTu)) max_tongSoLuonPhanTu = doDaiCuaSoInt(tongSoLuonPhanTu);
 
-	cout << separator_2 << stt << taoKhoangTrong(max_tongSoLuonPhanTu - stt.size()) << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
+	cout << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
 		<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
 	// in duong ket thuc 1 bo 
-	cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
+	cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
 	 
-	int dem = 1;
+
 	while (ptr != NULL) {
 		ostringstream ss,luong;
 		ss << ptr->data.ngaythangnamsinh[0] << '/' << ptr->data.ngaythangnamsinh[1] << '/' << ptr->data.ngaythangnamsinh[2];
 		luong << ptr->data.luong;
-		
-		int doDaiDem = doDaiCuaSoInt(dem);
 
-		cout << separator_2 << dem << taoKhoangTrong(max_tongSoLuonPhanTu - doDaiDem) << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size())  << separator_2<< ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) <<separator_2
+
+		cout << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size())  << separator_2<< ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) <<separator_2  
 	<< ss.str() << taoKhoangTrong(max_ngay - ss.str().size())  << separator_2  << ptr->data.luong << taoKhoangTrong(max_luong - luong.str().size()) << separator_2 << "\n";
 		// in duong ket thuc 1 bo 
-		cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
+		cout << '+' << string(max_ten + max_luong + max_ngay + max_chucvu + 3, '-') << '+' << "\n";
 
 		ptr = ptr->left;
-		dem++;
+
 	}
 }
 
