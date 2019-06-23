@@ -13,14 +13,25 @@ xuatNhapFile::~xuatNhapFile()
 
 
 string trim(const string& str)
-{
-	size_t first = str.find_first_not_of(' ');
-	if (string::npos == first)
+{   
+
+	
+	int  first = -1;
+	for (int i = 0; i < str.size() ; i++) {
+		if (str[i] != ' ') { first = i; break; }
+	}
+
+	if (-1 == first)
 	{
 		return str;
 	}
-	size_t last = str.find_last_not_of(' ');
-	return str.substr(first, (last - first + 1));
+	int last = str.size();
+	for (int i = str.size() - 1; i >= 0; i--) {
+
+		if (str[i] != ' ') { last = i; break; }
+	}
+	string re = str.substr(first, (last - first + 1));
+	return re;
 }
 
 vector<string> tach(string str, char kyHieuBoQua) {
@@ -135,7 +146,7 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 					if (dem == 1) break;
 				}
 			}
-			// gap + ngung doc|
+			// gap + ngung doc chuc vu 
 			if (c == '+') break;
 		}
 		int soLuongChucVu = i;
@@ -221,17 +232,17 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 						if (dem == 1) {
 							// chuyen string sang double
 							tam = trim(tam);
-							char* p;
-							long converted = strtod(tam.c_str(), &p);
-							if (*p) {
-								kt_duLieuHopLe++;
-								return 0;
-
-							}
-							else {
+							
+							if (coPhaiLaSo(tam)) {
+							
 								double a = stod(tam);
 								nhanv.luong = a;
 								break;
+							}
+							else {
+
+								kt_duLieuHopLe++;
+								return 0;
 							}
 
 						}
@@ -268,41 +279,43 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 							my[0] = trim(my[0]);
 							my[1] = trim(my[1]);
 							my[2] = trim(my[2]);
-							char* p;
+							
 							//lay ngay sinh 
-							long converted = strtod(my[0].c_str(), &p);
-							if (*p) {
-								kt_duLieuHopLe++;
-								return 0;
-
-							}
-							else {
+							
+							if (coPhaiLaSo(my[0])) {
+								
 								int chuyen = stoi(my[0]);
 								nhanv.ngaythangnamsinh[0] = chuyen;
+							}
+							else {
+
+								kt_duLieuHopLe++;
+								return 0;
 
 							}
 							// lay thang sinh 
-							converted = strtod(my[1].c_str(), &p);
-							if (*p) {
-								kt_duLieuHopLe++;
-								return 0;
-
-							}
-							else {
+							
+							if (coPhaiLaSo(my[1])) {
+								
 								int chuyen = stoi(my[1]);
 								nhanv.ngaythangnamsinh[1] = chuyen;
+							}
+							else {
+
+								kt_duLieuHopLe++;
+								return 0;
 
 							}
 							//lay nam sinh 
-							converted = strtod(my[2].c_str(), &p);
-							if (*p) {
-								kt_duLieuHopLe++;
-								return 0;
-
-							}
-							else {
+							
+							if (coPhaiLaSo(my[2])) {
 								int chuyen = stoi(my[2]);
 								nhanv.ngaythangnamsinh[2] = chuyen;
+							}
+							else {
+
+								kt_duLieuHopLe++;
+								return 0;
 
 							}
 

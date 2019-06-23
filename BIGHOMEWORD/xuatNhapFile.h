@@ -24,7 +24,7 @@ public:
 };
 
 string trim(const string& str);
-vector<string> tach(string str, char kyHieuBoQua);
+
 void reset(nhanvien &nhan);
 string layTen(string nhan);
 string tolower(string dauVao);
