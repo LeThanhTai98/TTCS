@@ -32,6 +32,10 @@ private:
 	int max_chucvu;
 	//so ky tu toi da cua ngay thang nam sinh 
 	int max_ngay;
+	//tong so luong phan tu 
+	int tongSoLuonPhanTu;
+	//so ky tu toi da cua tong so luong phan tu 
+	int max_tongSoLuonPhanTu;
 	// cai nay xai ben trong in file 
 	void show_2(tree_node *item, ofstream &myfile);
 
