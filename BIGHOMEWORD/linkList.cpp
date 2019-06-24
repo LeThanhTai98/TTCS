@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include <string>
 #include <string.h>
@@ -362,8 +362,40 @@ void linkList::show_1() {
 	}
 }
 
+//show ra 1 nhân viên
+void linkList::show_3(tree_node *ptr,int dem) {
+	const char separator = ' ';
+	const char separator_2 = '|';
+	// nối ngày tháng năm
+		ostringstream ss, luong;
+		ss << ptr->data.ngaythangnamsinh[0] << '/' << ptr->data.ngaythangnamsinh[1] << '/' << ptr->data.ngaythangnamsinh[2];
+		luong << ptr->data.luong;
+		int doDaiDem = doDaiCuaSoInt(dem);
+		cout << separator_2 << dem << taoKhoangTrong(max_tongSoLuonPhanTu - doDaiDem) << separator_2 << ptr->data.ho_va_ten << taoKhoangTrong(max_ten - ptr->data.ho_va_ten.size()) << separator_2 << ptr->data.chucvu_chu << taoKhoangTrong(max_chucvu - ptr->data.chucvu_chu.size()) << separator_2
+			<< ss.str() << taoKhoangTrong(max_ngay - ss.str().size()) << separator_2 << ptr->data.luong << taoKhoangTrong(max_luong - luong.str().size()) << separator_2 << "\n";
+		// in duong ket thuc 1 bo 
+		cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
 
+		ptr = ptr->left;
 
+}
+void linkList::show_khung() 
+{
+	const char separator = ' ';
+	const char separator_2 = '|';
+	string hoTen, chuc, ngaythang, heSoLuong, stt;
+	stt = "STT";
+	hoTen = "ho va ten";
+	chuc = "chuc vu";
+	ngaythang = "ngay thang nam sinh";
+	heSoLuong = "he so luong";
+	if (max_tongSoLuonPhanTu < doDaiCuaSoInt(tongSoLuonPhanTu)) max_tongSoLuonPhanTu = doDaiCuaSoInt(tongSoLuonPhanTu);
+
+	cout << separator_2 << stt << taoKhoangTrong(max_tongSoLuonPhanTu - stt.size()) << separator_2 << hoTen << taoKhoangTrong(max_ten - hoTen.size()) << separator_2 << chuc << taoKhoangTrong(max_chucvu - chuc.size()) << separator_2
+		<< ngaythang << taoKhoangTrong(max_ngay - ngaythang.size()) << separator_2 << heSoLuong << taoKhoangTrong(max_luong - heSoLuong.size()) << separator_2 << "\n";
+	// in duong ket thuc 1 bo 
+	cout << '+' << string(max_tongSoLuonPhanTu + max_ten + max_luong + max_ngay + max_chucvu + 4, '-') << '+' << "\n";
+}
 
 void linkList::MergeSort(tree_node** headRef)
 {
@@ -549,5 +581,209 @@ void linkList::setLast() {
 		if (current->left == NULL) last = current;
 		current = current->left;
 
+	}
+}
+
+
+// Tìm kiếm theo họ và tên
+//void linkList::searchChucVu(string cv) {
+//	int i=1;
+//	tree_node *tree = roots;
+//	while(tree != NULL)
+//	{
+//		if (tree->data.ho_va_ten.substr(0,cv.length()) == cv)
+//		{
+//			cout << "tim thay o vi tri: "<<i<<endl;
+//		}
+//		else
+//		{
+//			cout << "Khong tim thay";
+//		}
+//		tree = tree->left;
+//		i++;
+//	}
+//
+//}
+
+// Tim kiếm theo hệ số lương
+void linkList::searchLuong(double cv) {
+	tree_node *tree = roots;
+	int i=1;
+	show_khung();
+	while(tree != NULL)
+	{
+		if (tree->data.luong == cv)
+		{
+			//cout << "tim thay o vi tri: "<< i <<endl;
+			show_3(tree,i);
+		}
+		tree = tree->left;
+		i++;
+	}
+	cout << "Khong tim thay" << endl;
+}
+
+// Tìm kiếm theo Chức Vụ
+void linkList::searchChucVu(string cv) {
+	tree_node *tree = roots;
+	int i = 1;
+	show_khung();
+	while (tree != NULL)
+	{
+		if (tree->data.chucvu_chu == cv)
+		{
+			//cout << "tim thay o vi tri: "<< i <<endl;
+			show_3(tree, i);
+		}
+		tree = tree->left;
+		i++;
+	}
+	cout << "Khong tim thay" << endl;
+}
+
+// Tìm kiếm theo ngày tháng năm sinh
+void linkList::searchNTN(int ngay, int thang, int nam) {
+	tree_node *tree = roots;
+	int i = 1;
+	show_khung();
+	if (ngay == 0 && thang !=0 && nam !=0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[1] == thang && tree->data.ngaythangnamsinh[2] == nam)
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+
+	if (thang == 0 && ngay != 0 && nam != 0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[0] == ngay && tree->data.ngaythangnamsinh[2] == nam)
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+
+	if (nam == 0 && ngay != 0 && thang != 0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[0] == ngay && tree->data.ngaythangnamsinh[1] == thang )
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+
+	if (ngay == 0 && thang == 0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[2] == nam)
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+
+	if (ngay == 0 && nam == 0)
+	{
+		while (tree != NULL)
+		{
+			if ( tree->data.ngaythangnamsinh[1] == thang )
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+
+	if (thang == 0 && nam == 0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[0] == ngay)
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+	
+	if (ngay != 0 && thang !=0 && nam !=0)
+	{
+		while (tree != NULL)
+		{
+			if (tree->data.ngaythangnamsinh[0] == ngay && tree->data.ngaythangnamsinh[1] == thang && tree->data.ngaythangnamsinh[2] == nam)
+			{
+				show_3(tree, i);
+			}
+			tree = tree->left;
+			i++;
+		}
+	}
+}
+
+// Tìm kiếm theo họ và tên
+
+int linkList::search(string txt, string pat) 
+{
+	int M = pat.size();
+	int N = txt.size();
+	int i = 0;
+
+	while (i <= N - M)
+	{
+		int j;
+
+		/* For current index i, check for pattern match */
+		for (j = 0; j < M; j++)
+			if (txt[i + j] != pat[j])
+				break;
+
+		if (j == M) // if pat[0...M-1] = txt[i, i+1, ...i+M-1]  
+		{
+			//cout << "Pattern found at index " << i << endl;
+			return 1;
+			//i = i + M;
+		}
+		else	if (j == 0)
+			i = i + 1;
+		else
+			i = i + j; // slide the pattern by j  
+		if (i==(N-M)+1)
+		{
+			return 0;
+		}
+
+	}
+}
+void linkList::searchHoTen(string cv)
+{
+	tree_node *tree = roots;
+	int i = 1;
+	show_khung();
+	while (tree != NULL)
+	{
+		if (search(tree->data.ho_va_ten,cv) == 1)
+		{
+			show_3(tree,i);
+		}
+		tree = tree->left;
+		i++;
 	}
 }

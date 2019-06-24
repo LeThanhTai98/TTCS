@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "pch.h"
 
 #include <string>
@@ -65,7 +65,10 @@ public:
 	void deleteList(tree_node** headRef);
 	// show nhan vien ra
 	void show_1();
-
+	//show ra khung
+	void show_khung();
+	//show ra 1 bộ và vị trí
+	void show_3(tree_node *prt, int dem);
 	// merge sort hop vs link list theo tim hieu la vay 
 	void  MergeSort(tree_node** headRef);
 
@@ -80,7 +83,16 @@ public:
 
 	int getMax_Ten() { return max_ten; }
 	int getMax_Luong() { return max_luong; }
-	
+	//tìm kiếm theo hệ số lương
+	void searchLuong(double cv);
+	//tìm kiếm theo chức vụ
+	void searchChucVu(string cv);
+	// tìm kiếm theo họ và tên
+	void searchHoTen(string cv);
+	// tìm kiếm theo ngày tháng năm sinh
+	void searchNTN(int ngay, int thang, int nam);
+	//void badCharHeuristic(string str, int size, int badchar[255]);
+	int search(string txt, string pat);
 	friend class xuatNhapFile;
 	
 	
