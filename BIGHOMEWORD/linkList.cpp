@@ -130,96 +130,98 @@ void linkList::insert(nhanvien item) {
 		tree_node *parent = NULL;
 		tree_node *ptr = getRoots();
 
+		if (ptr != NULL) {
+			if (type_sort == 1)
 
-		   if (type_sort == 1)
+				do {
+					if (ptr->data.luong == p->data.luong) {
 
-			 do {
-				if (ptr->data.luong == p->data.luong){
-
-				string ten1 = ptr->data.ten;
-				string ten2 = p->data.ten;
-				string hoten1 = ptr->data.ho_va_ten;
-			    string hoten2 = p->data.ho_va_ten;
-				if (sosanhten (ten1, ten2, hoten1, hoten2) <= 0) {
-					 parent = ptr;
-					ptr = ptr->left;
-				   }
-				  else {
-					break;
-				  }
-			    }
-				else
-					if (ptr->data.luong > p->data.luong) {
-						 parent = ptr;
-						ptr = ptr->left;
+						string ten1 = ptr->data.ten;
+						string ten2 = p->data.ten;
+						string hoten1 = ptr->data.ho_va_ten;
+						string hoten2 = p->data.ho_va_ten;
+						if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+							parent = ptr;
+							ptr = ptr->left;
+						}
+						else {
+							break;
+						}
 					}
-					else {	
-						break;
+					else
+						if (ptr->data.luong > p->data.luong) {
+							parent = ptr;
+							ptr = ptr->left;
+						}
+						else {
+							break;
+						}
+
+				} while (ptr != NULL);
+
+				if (type_sort == 2)
+					do {
+						if (ptr->data.chucvu == p->data.chucvu) {
+
+							string ten1 = ptr->data.ten;
+							string ten2 = p->data.ten;
+							string hoten1 = ptr->data.ho_va_ten;
+							string hoten2 = p->data.ho_va_ten;
+							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+								parent = ptr;
+								ptr = ptr->left;
+							}
+							else {
+								break;
+							}
+						}
+						else
+							if (ptr->data.chucvu > p->data.chucvu) {
+								parent = ptr;
+								ptr = ptr->left;
+							}
+							else {
+								break;
+							}
+
+					} while (ptr != NULL);
+
+
+					if (type_sort == 3) {
+						do {
+							if (soSanhNgayThangNam(ptr->data, p->data))
+							{
+								parent = ptr;
+								ptr = ptr->left;
+							}
+							else
+							{
+								break;
+							}
+
+						} while (ptr != NULL);
+
+
+
 					}
-				
-	       }while (ptr != NULL );
 
-		 if (type_sort == 2)
-			 do {
-				 if (ptr->data.chucvu == p->data.chucvu) {
+					if (type_sort == 4) {
+						do {
+							string ten1 = ptr->data.ten;
+							string ten2 = p->data.ten;
+							string hoten1 = ptr->data.ho_va_ten;
+							string hoten2 = p->data.ho_va_ten;
+							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+								parent = ptr;
+								ptr = ptr->left;
+							}
+							else {
+								break;
+							}
 
-					 string ten1 = ptr->data.ten;
-					 string ten2 = p->data.ten;
-					 string hoten1 = ptr->data.ho_va_ten;
-					 string hoten2 = p->data.ho_va_ten;
-					 if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-						 parent = ptr;
-						 ptr = ptr->left;
-					 }
-					 else {
-						 break;
-					 }
-				 }
-				 else
-					 if (ptr->data.chucvu > p->data.chucvu) {
-						 parent = ptr;
-						 ptr = ptr->left;
-					 }
-					 else {
-						 break;
-					 }
-
-			 } while (ptr != NULL);
-
-
-		if (type_sort == 3) {
-			do{
-				if (soSanhNgayThangNam(ptr->data, p->data))
-				{
-					parent = ptr;
-					ptr = ptr->left;
-				}
-				else
-				{
-					break;
-				}
-
-			}while (ptr != NULL);
-
-
-
-		}
-
-		if (type_sort == 4) {
-			do {
-				string ten1 = ptr->data.ten;
-				string ten2 = p->data.ten;
-				string hoten1 = ptr->data.ho_va_ten;
-				string hoten2 = p->data.ho_va_ten;
-				if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-					parent = ptr;
-					ptr = ptr->left;
-				}
-				else {
-					break;
-				}
-
-			} while (ptr != NULL);
+						} while (ptr != NULL);
+					}
+					
 		}
 		if (parent != NULL) {
 			tree_node *tem_node = parent->left;
