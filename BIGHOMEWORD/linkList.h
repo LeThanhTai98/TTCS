@@ -39,6 +39,12 @@ private:
 	// cai nay xai ben trong in file 
 	void show_2(tree_node *item, ofstream &myfile);
 
+	// ham cua merger sort
+	tree_node* SortedMerge(tree_node* a, tree_node* b, int type_sort);
+
+	// merge sort hop vs link list theo tim hieu la vay 
+	void  MergeSort(tree_node** headRef);
+
 public:
 	~linkList();
 	linkList();
@@ -59,8 +65,7 @@ public:
 	tree_node * getLast();
 	// cai nay de in file 
 	void in_file();
-	// chua kip viet xuong main chuong trinh coi 
-	void nhapfile(string file);
+
 	//xoa link list 
 	void deleteList(tree_node** headRef);
 	// show nhan vien ra
@@ -69,14 +74,12 @@ public:
 	void show_khung();
 	//show ra 1 bộ và vị trí
 	void show_3(tree_node *prt, int dem);
-	// merge sort hop vs link list theo tim hieu la vay 
-	void  MergeSort(tree_node** headRef);
+
 
 	// goi sort 1 de sort theo luong , 2 chuc vu , 3 ngay thang nam sinh 
 	void  Sort(const int&);
 
-	// ham cua merger sort
-	tree_node* SortedMerge(tree_node* a, tree_node* b, int type_sort);
+
 
 	// lay thang nhan vien cuoi list 
 	void setLast();
