@@ -50,31 +50,35 @@ int sosanhten(string ten1, string ten2,string hoten1 , string hoten2) {
 }
 
 
-bool soSanhNgayThangNam(nhanvien data1 , nhanvien data2) {
-	if (data1.ngaythangnamsinh[2] < data2.ngaythangnamsinh[2]) {
-		return true;
+bool linkList::soSanhNgayThangNam(nhanvien data1 , nhanvien data2 ) {
+	
+		if (data1.ngaythangnamsinh[2] < data2.ngaythangnamsinh[2]) {
+			return true;
+		}
+		else if (data1.ngaythangnamsinh[2] > data2.ngaythangnamsinh[2]) {
+			return false;
+
+		}
+		else if (data1.ngaythangnamsinh[1] < data2.ngaythangnamsinh[1]) {
+			return true;
+		}
+		else if (data1.ngaythangnamsinh[1] > data2.ngaythangnamsinh[1]) {
+			return false;
+		}
+		else if (data1.ngaythangnamsinh[0] < data2.ngaythangnamsinh[0]) {
+			return true;
+		}
+		else if (data1.ngaythangnamsinh[0] > data2.ngaythangnamsinh[0]) {
+			return false;
+		}
+		else if (sosanhten(data1.ten, data2.ten, data1.ho_va_ten, data2.ho_va_ten) <= 0) {
+			if (thuTu_sort == 1)return true;
+			else return false;
+		}
+		if (thuTu_sort == 1) return false;
+		else return true;
 	}
-	else if (data1.ngaythangnamsinh[2] > data2.ngaythangnamsinh[2]) {
-		return false;
-		
-	}
-	else if (data1.ngaythangnamsinh[1] < data2.ngaythangnamsinh[1]) {
-		return true;
-	}
-	else if (data1.ngaythangnamsinh[1] > data2.ngaythangnamsinh[1]) {
-		return false;
-	}
-	else if (data1.ngaythangnamsinh[0] < data2.ngaythangnamsinh[0]) {
-		return true;
-	}
-	else if (data1.ngaythangnamsinh[0] > data2.ngaythangnamsinh[0]) {
-		return false;
-	}
-	else if (sosanhten(data1.ten,data2.ten, data1.ho_va_ten , data2.ho_va_ten) <= 0) {
-		return true;
-	}
-	return false;
-}
+	
 
 
 
@@ -89,6 +93,100 @@ linkList::linkList() { roots = NULL;type_sort = 0;max_ten = 11; max_luong = 13;m
 linkList::~linkList() {
 	deleteList(&roots);
 }
+bool linkList:: soSanhNhanVien(tree_node *a, tree_node *b) {
+	bool ketQua;
+		switch (type_sort)
+		{
+		case 1: {
+			if (a->data.luong == b->data.luong) {
+				string ten1 = a->data.ten;
+				string ten2 = b->data.ten;
+				string hoten1 = a->data.ho_va_ten;
+				string hoten2 = b->data.ho_va_ten;
+
+				if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+				 if (thuTu_sort == 1)	ketQua = true;
+				 else ketQua = false;
+				}
+				else {
+					if (thuTu_sort == 1)ketQua = false;
+					else ketQua = true;
+				}
+			}
+			else
+				if (a->data.luong > b->data.luong) {
+					ketQua = true;
+				}
+				else {
+					ketQua = false;
+				}
+		}
+				break;
+				// sort theo chuc vu so neu bang bang nhau sort theo ten
+		case 2: {
+			if (a->data.chucvu == b->data.chucvu) {
+				string ten1 = a->data.ten;
+				string ten2 = b->data.ten;
+				string hoten1 = a->data.ho_va_ten;
+				string hoten2 = b->data.ho_va_ten;
+
+				if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+					if (thuTu_sort == 1)	ketQua = true;
+					else ketQua = false;
+				}
+				else {
+					if (thuTu_sort == 1)ketQua = false;
+					else ketQua = true;
+				}
+			}
+			else
+				if (a->data.chucvu > b->data.chucvu) {
+					ketQua = true;
+				}
+				else {
+					ketQua = false;
+				}
+		}
+				break;
+				// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
+		case 3: {
+
+			if (soSanhNgayThangNam(a->data, b->data))
+			{
+				ketQua = true;
+			}
+			else {
+				ketQua = false;
+			}
+
+		}
+				break;
+		case 4: {
+			string ten1 = a->data.ten;
+			string ten2 = b->data.ten;
+			string hoten1 = a->data.ho_va_ten;
+			string hoten2 = b->data.ho_va_ten;
+
+			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0)
+			{
+				ketQua = true;
+			}
+			else {
+				ketQua = false;
+			}
+		}
+				break;
+		default:
+			ketQua = true;
+			break;
+		}
+		if (thuTu_sort == 1) return ketQua;
+		else if (thuTu_sort == 2) {
+			ketQua = !ketQua;
+			return ketQua;
+		}
+	}
+	
 
 void linkList::insert(nhanvien item) {
 	// so sanh de tim chuoi dai nhat 
@@ -132,97 +230,15 @@ void linkList::insert(nhanvien item) {
 		tree_node *ptr = getRoots();
 
 		if (ptr != NULL) {
-			if (type_sort == 1)
-
 				do {
-					if (ptr->data.luong == p->data.luong) {
-
-						string ten1 = ptr->data.ten;
-						string ten2 = p->data.ten;
-						string hoten1 = ptr->data.ho_va_ten;
-						string hoten2 = p->data.ho_va_ten;
-						if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+					if (soSanhNhanVien(ptr,p)) {
 							parent = ptr;
 							ptr = ptr->left;
 						}
 						else {
 							break;
 						}
-					}
-					else
-						if (ptr->data.luong > p->data.luong) {
-							parent = ptr;
-							ptr = ptr->left;
-						}
-						else {
-							break;
-						}
-
 				} while (ptr != NULL);
-
-				if (type_sort == 2)
-					do {
-						if (ptr->data.chucvu == p->data.chucvu) {
-
-							string ten1 = ptr->data.ten;
-							string ten2 = p->data.ten;
-							string hoten1 = ptr->data.ho_va_ten;
-							string hoten2 = p->data.ho_va_ten;
-							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-						}
-						else
-							if (ptr->data.chucvu > p->data.chucvu) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-
-					} while (ptr != NULL);
-
-
-					if (type_sort == 3) {
-						do {
-							if (soSanhNgayThangNam(ptr->data, p->data))
-							{
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else
-							{
-								break;
-							}
-
-						} while (ptr != NULL);
-
-
-
-					}
-
-					if (type_sort == 4) {
-						do {
-							string ten1 = ptr->data.ten;
-							string ten2 = p->data.ten;
-							string hoten1 = ptr->data.ho_va_ten;
-							string hoten2 = p->data.ho_va_ten;
-							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-
-						} while (ptr != NULL);
-					}
-					
 		}
 		if (parent != NULL) {
 			tree_node *tem_node = parent->left;
@@ -432,6 +448,7 @@ void linkList::MergeSort(tree_node** headRef)
 
 }
 
+
 // so sanh vs noi mang 
 tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 {
@@ -442,78 +459,8 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 	else if (b == NULL)
 		return (a);
 	//sort theo luong neu bang bang nhau sort theo ten
-	bool ketQua = true;
-	if (type_sort == 1) {
-		if (a->data.luong == b->data.luong) {
-			string ten1 = a->data.ten;
-			string ten2 = b->data.ten;
-			string hoten1 = a->data.ho_va_ten;
-			string hoten2 = b->data.ho_va_ten;
-	
-			if (sosanhten(ten1, ten2, hoten1, hoten2 )<= 0) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-		}
-		else
-	 if (a->data.luong > b->data.luong) {
-		 ketQua = true;
-	 }
-	 else {
-		 ketQua = false;
-	 }
-	}
-	// sort theo chuc vu so neu bang bang nhau sort theo ten
-	if (type_sort == 2) {
-		if (a->data.chucvu == b->data.chucvu) {
-			string ten1 = a->data.ten;
-			string ten2 = b->data.ten;
-			string hoten1 = a->data.ho_va_ten;
-			string hoten2 = b->data.ho_va_ten;
+	bool ketQua = soSanhNhanVien(a,b);
 
-			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-		}
-		else
-			if (a->data.chucvu > b->data.chucvu) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-	}
-	// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
-	if (type_sort == 3) {
-
-		if(soSanhNgayThangNam(a->data,b->data))
-		{
-			ketQua = true;
-		}
-		else {
-			ketQua = false;
-		}
-		
-	}
-	if (type_sort == 4) {
-		string ten1 = a->data.ten;
-		string ten2 = b->data.ten;
-		string hoten1 = a->data.ho_va_ten;
-		string hoten2 = b->data.ho_va_ten;
-
-		if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) 
-		{
-			ketQua = true;
-		}
-		else {
-			ketQua = false;
-		}
-	}
 	if (ketQua) {
 		result = a;
 
@@ -550,8 +497,9 @@ void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef
 	slow->left = NULL;
 }
 
-void linkList::Sort(int const &type) {
+void linkList::Sort(int const &type , int const &thuTu) {
 	type_sort = type;
+	thuTu_sort = thuTu;
 	MergeSort(&roots);
 }
 
