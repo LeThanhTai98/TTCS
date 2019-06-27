@@ -84,7 +84,7 @@ void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef
 
 ostream& operator<<(ostream& os, const nhanvien& item);
 
-linkList::linkList() { roots = NULL;last = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21;max_tongSoLuonPhanTu = 5; }
+linkList::linkList() { roots = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21;max_tongSoLuonPhanTu = 5; }
 
 linkList::~linkList() {
 	deleteList(&roots);
@@ -112,8 +112,9 @@ void linkList::insert(nhanvien item) {
 
 	p->data = item;
 
+	
 	if (type_sort == 0) {
-
+		tree_node *last = getLast();
 		tree_node *parent = NULL;
 		if (is_empty()) {
 			roots = p;
@@ -268,6 +269,14 @@ tree_node* linkList::getRoots() {
 
 
 tree_node* linkList::getLast() {
+	
+	tree_node *last = roots;
+	if (last != NULL) {
+		while (last->left != NULL)
+			last = last->left;
+
+		return last;
+	}
 	return last;
 }
 string taoKhoangTrong(int soKhoantrong) {
@@ -557,15 +566,7 @@ void linkList::deleteList(tree_node** headRef) {
 	*headRef = NULL;
 }
 
-void linkList::setLast() {
-	tree_node *current = roots;
-	
-	while (current != NULL) {
-		if (current->left == NULL) last = current;
-		current = current->left;
 
-	}
-}
 
 
 // Tìm kiếm theo họ và tên
@@ -778,15 +779,16 @@ void linkList::searchHoTen(string cv)
 
 // Xóa theo chức vụ
 void linkList::removeHead(linkList &l) 
-{
+{   
+	tree_node *last = l.getLast();
 	if (!l.roots)
 	{
 		cout << "Danh sach rong!";
 	}
-	else if (l.roots==l.last)
+	else if (l.roots==last)
 	{
 		delete l.roots;
-		l.roots = l.last = NULL;
+		l.roots = last = NULL;
 	}
 	else
 	{
@@ -797,20 +799,21 @@ void linkList::removeHead(linkList &l)
 }
 void linkList::removeTail(linkList &l)
 {
+	tree_node *last = l.getLast();
 	if (!l.roots)
 		cout << "Danh sach rong!" << endl;
-	else if (l.roots == l.last)
+	else if (l.roots == last)
 	{
 		delete l.roots;
-		l.roots = l.last = NULL;
+		l.roots = last = NULL;
 	}
 	else
 	{
 		tree_node *temp = l.roots;
-		while (temp->left != l.last)
+		while (temp->left != last)
 			temp = temp->left;
-		delete l.last;
-		l.last = temp;
+		delete last;
+		temp->left = NULL;
 	}
 }
 void linkList::removeAfter(linkList &l,tree_node *t)

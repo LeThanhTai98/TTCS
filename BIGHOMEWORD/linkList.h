@@ -20,8 +20,7 @@ private:
 	//phan tu dau list
 	
 	tree_node *roots;
-	//phan tu cuoi list
-	tree_node *last;
+
 	//tieu chi sap xep 
 	int type_sort;
 	//so ky tu toi da cua ten 
@@ -48,8 +47,7 @@ private:
 public:
 	~linkList();
 	linkList();
-	// thang duoi nay chua kip viet 
-	linkList(const tree_node &);
+
 
 	// kiem tra rong
 	int is_empty() {
@@ -81,8 +79,7 @@ public:
 
 
 
-	// lay thang nhan vien cuoi list 
-	void setLast();
+
 
 	int getMax_Ten() { return max_ten; }
 	int getMax_Luong() { return max_luong; }
