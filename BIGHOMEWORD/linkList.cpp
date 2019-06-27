@@ -774,3 +774,154 @@ void linkList::searchHoTen(string cv)
 	 
 
 }
+
+
+// Xóa theo chức vụ
+void linkList::removeHead(linkList &l) 
+{
+	if (!l.roots)
+	{
+		cout << "Danh sach rong!";
+	}
+	else if (l.roots==l.last)
+	{
+		delete l.roots;
+		l.roots = l.last = NULL;
+	}
+	else
+	{
+		tree_node *temp = l.roots;
+		l.roots = l.roots->left;
+		delete temp;
+	}
+}
+void linkList::removeTail(linkList &l)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else if (l.roots == l.last)
+	{
+		delete l.roots;
+		l.roots = l.last = NULL;
+	}
+	else
+	{
+		tree_node *temp = l.roots;
+		while (temp->left != l.last)
+			temp = temp->left;
+		delete l.last;
+		l.last = temp;
+	}
+}
+void linkList::removeAfter(linkList &l,tree_node *t)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *temp = t->left;
+		if (temp)
+		{
+			t->left = temp->left;
+			delete temp;
+		}
+	}
+}
+void linkList::RemoveKey(linkList &l, string key) 
+{
+		if (!l.roots)
+			cout << "Danh sach rong!" << endl;
+		else
+		{
+			tree_node *result = l.roots, *before = NULL;
+			while (result && result->data.chucvu_chu != key)
+			{
+				before = result;
+				result = result->left;
+			}
+			if (result)
+			{
+				if (result == l.roots)
+					removeHead(l);
+				else
+					removeAfter(l, before);
+			}
+		}
+		//tree = tree->left
+}
+
+
+void linkList::RemoveDupNode(linkList &l,string cv)
+{
+	tree_node *p, *q, *t;
+	p = l.roots;
+	while (p != NULL)
+	{
+		t = p;
+		q = p->left;
+		while (q != NULL)
+		{
+			if (q->left != NULL && q->data.chucvu_chu == cv)
+			{
+				removeAfter(l, t);
+				q = t->left;
+			}
+			else
+			{
+				t = q;
+				q = q->left;
+			}
+		}
+		p = p->left;
+	}
+	//removeTail(l);
+	RemoveKey(l, cv);
+	RemoveKey(l,cv);
+}
+void linkList::deleteChucvu(string cv)
+{
+	tree_node *tree = roots;
+	//tree_node *t1 = NULL;
+	//tree_node *t2 = NULL;
+	//while(tree != NULL)
+	//{
+	//	
+	//	tree = tree->left;
+	//}
+
+
+	//tree_node *t1 = NULL;
+	//tree_node *t2 = NULL;
+	//while (tree != NULL)
+	//{
+
+
+	//	if (roots->data.chucvu_chu == cv)
+	//	{
+	//		roots = roots->left;
+	//		//return;
+	//	}
+	//	t1 = roots;
+	//	while (t1->left != NULL && t1->data.chucvu_chu != cv)
+	//	{
+	//		t2 = t1;
+	//		t1 = t1->left;
+	//	}
+
+	//	if (t1->left !=NULL && t1->data.chucvu_chu == cv)
+	//	{
+	//		t2->left = t2->left->left;
+	//		free(t1);
+	//		//return;
+	//	}
+
+	//	else
+	//	{
+	//		cout << "Khong tim thay " << cv << " trong danh sach"<<endl;
+	//	}
+	//	tree = tree->left;
+	//}
+	//return;
+}
+// xóa cuối thì thêm vào không được // đã sử lí ở điều kiện không được trỏ tới NULL
+// xóa vị trí thứ 2 không được

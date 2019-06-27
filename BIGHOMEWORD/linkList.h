@@ -96,6 +96,16 @@ public:
 	void searchNTN(int ngay, int thang, int nam);
 	//void badCharHeuristic(string str, int size, int badchar[255]);
 	int search(string txt, string pat);
+
+
+	// chức năng xóa
+	void removeHead(linkList &l);
+	void removeTail(linkList &l);
+	void removeAfter(linkList &l, tree_node *t);
+	void RemoveKey(linkList &l, string key);
+	void RemoveDupNode(linkList &l, string cv);
+	void deleteChucvu(string cv);
+
 	friend class xuatNhapFile;
 	
 	
