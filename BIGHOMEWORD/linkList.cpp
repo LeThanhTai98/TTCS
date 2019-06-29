@@ -189,7 +189,7 @@ void linkList::insert(nhanvien item) {
 	if (max_ten < doDaiHoTen) max_ten = doDaiHoTen;
 
 	//convert so sang string de so sanh 
-	
+
 	ostringstream a;
 	a << item.luong;
 	int doDaiLuong = a.str().size();
@@ -205,7 +205,7 @@ void linkList::insert(nhanvien item) {
 
 	p->data = item;
 
-	
+
 	if (type_sort == 0) {
 		tree_node *last = getLast();
 		tree_node *parent = NULL;
@@ -225,97 +225,17 @@ void linkList::insert(nhanvien item) {
 		tree_node *ptr = getRoots();
 
 		if (ptr != NULL) {
-			if (type_sort == 1)
+			do {
+				if (soSanhNhanVien(ptr, p)) {
+				parent = ptr;
+				ptr = ptr->left;
+			}
+			else {
+				break;
+			}
 
-				do {
-					if (ptr->data.luong == p->data.luong) {
-
-						string ten1 = ptr->data.ten;
-						string ten2 = p->data.ten;
-						string hoten1 = ptr->data.ho_va_ten;
-						string hoten2 = p->data.ho_va_ten;
-						if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-							parent = ptr;
-							ptr = ptr->left;
-						}
-						else {
-							break;
-						}
-					}
-					else
-						if (ptr->data.luong > p->data.luong) {
-							parent = ptr;
-							ptr = ptr->left;
-						}
-						else {
-							break;
-						}
-
-				} while (ptr != NULL);
-
-				if (type_sort == 2)
-					do {
-						if (ptr->data.chucvu == p->data.chucvu) {
-
-							string ten1 = ptr->data.ten;
-							string ten2 = p->data.ten;
-							string hoten1 = ptr->data.ho_va_ten;
-							string hoten2 = p->data.ho_va_ten;
-							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-						}
-						else
-							if (ptr->data.chucvu > p->data.chucvu) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-
-					} while (ptr != NULL);
-
-
-					if (type_sort == 3) {
-						do {
-							if (soSanhNgayThangNam(ptr->data, p->data))
-							{
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else
-							{
-								break;
-							}
-
-						} while (ptr != NULL);
-
-
-
-					}
-
-					if (type_sort == 4) {
-						do {
-							string ten1 = ptr->data.ten;
-							string ten2 = p->data.ten;
-							string hoten1 = ptr->data.ho_va_ten;
-							string hoten2 = p->data.ho_va_ten;
-							if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-								parent = ptr;
-								ptr = ptr->left;
-							}
-							else {
-								break;
-							}
-
-						} while (ptr != NULL);
-					}
-					
+		} while (ptr != NULL);
+	
 		}
 		if (parent != NULL) {
 			tree_node *tem_node = parent->left;
@@ -535,78 +455,8 @@ tree_node*linkList::SortedMerge(tree_node* a, tree_node* b, int type_sort)
 	else if (b == NULL)
 		return (a);
 	//sort theo luong neu bang bang nhau sort theo ten
-	bool ketQua = true;
-	if (type_sort == 1) {
-		if (a->data.luong == b->data.luong) {
-			string ten1 = a->data.ten;
-			string ten2 = b->data.ten;
-			string hoten1 = a->data.ho_va_ten;
-			string hoten2 = b->data.ho_va_ten;
+	bool ketQua = soSanhNhanVien(a, b);
 	
-			if (sosanhten(ten1, ten2, hoten1, hoten2 )<= 0) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-		}
-		else
-	 if (a->data.luong > b->data.luong) {
-		 ketQua = true;
-	 }
-	 else {
-		 ketQua = false;
-	 }
-	}
-	// sort theo chuc vu so neu bang bang nhau sort theo ten
-	if (type_sort == 2) {
-		if (a->data.chucvu == b->data.chucvu) {
-			string ten1 = a->data.ten;
-			string ten2 = b->data.ten;
-			string hoten1 = a->data.ho_va_ten;
-			string hoten2 = b->data.ho_va_ten;
-
-			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-		}
-		else
-			if (a->data.chucvu > b->data.chucvu) {
-				ketQua = true;
-			}
-			else {
-				ketQua = false;
-			}
-	}
-	// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
-	if (type_sort == 3) {
-
-		if(soSanhNgayThangNam(a->data,b->data))
-		{
-			ketQua = true;
-		}
-		else {
-			ketQua = false;
-		}
-		
-	}
-	if (type_sort == 4) {
-		string ten1 = a->data.ten;
-		string ten2 = b->data.ten;
-		string hoten1 = a->data.ho_va_ten;
-		string hoten2 = b->data.ho_va_ten;
-
-		if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) 
-		{
-			ketQua = true;
-		}
-		else {
-			ketQua = false;
-		}
-	}
 	if (ketQua) {
 		result = a;
 
