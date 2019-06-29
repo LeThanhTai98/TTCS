@@ -77,7 +77,99 @@ bool linkList::soSanhNgayThangNam(nhanvien data1, nhanvien data2) {
 	if (thuTu_sort == 1) return false;
 	else return true;
 }
-return false;
+
+bool linkList::soSanhNhanVien(tree_node *a, tree_node *b) {
+	bool ketQua;
+	switch (type_sort)
+	{
+	case 1: {
+		if (a->data.luong == b->data.luong) {
+			string ten1 = a->data.ten;
+			string ten2 = b->data.ten;
+			string hoten1 = a->data.ho_va_ten;
+			string hoten2 = b->data.ho_va_ten;
+
+			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+				if (thuTu_sort == 1)	ketQua = true;
+				else ketQua = false;
+			}
+			else {
+				if (thuTu_sort == 1)ketQua = false;
+				else ketQua = true;
+			}
+		}
+		else
+			if (a->data.luong > b->data.luong) {
+				ketQua = true;
+			}
+			else {
+				ketQua = false;
+			}
+	}
+			break;
+			// sort theo chuc vu so neu bang bang nhau sort theo ten
+	case 2: {
+		if (a->data.chucvu == b->data.chucvu) {
+			string ten1 = a->data.ten;
+			string ten2 = b->data.ten;
+			string hoten1 = a->data.ho_va_ten;
+			string hoten2 = b->data.ho_va_ten;
+
+			if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0) {
+				if (thuTu_sort == 1)	ketQua = true;
+				else ketQua = false;
+			}
+			else {
+				if (thuTu_sort == 1)ketQua = false;
+				else ketQua = true;
+			}
+		}
+		else
+			if (a->data.chucvu > b->data.chucvu) {
+				ketQua = true;
+			}
+			else {
+				ketQua = false;
+			}
+	}
+			break;
+			// sort theo ngay thang nam sinh neu bang bang nhau sort theo ten
+	case 3: {
+
+		if (soSanhNgayThangNam(a->data, b->data))
+		{
+			ketQua = true;
+		}
+		else {
+			ketQua = false;
+		}
+
+	}
+			break;
+	case 4: {
+		string ten1 = a->data.ten;
+		string ten2 = b->data.ten;
+		string hoten1 = a->data.ho_va_ten;
+		string hoten2 = b->data.ho_va_ten;
+
+		if (sosanhten(ten1, ten2, hoten1, hoten2) <= 0)
+		{
+			ketQua = true;
+		}
+		else {
+			ketQua = false;
+		}
+	}
+			break;
+	default:
+		ketQua = true;
+		break;
+	}
+	if (thuTu_sort == 1) return ketQua;
+	else if (thuTu_sort == 2) {
+		ketQua = !ketQua;
+		return ketQua;
+	}
 }
 
 
@@ -551,8 +643,9 @@ void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef
 	slow->left = NULL;
 }
 
-void linkList::Sort(int const &type) {
+void linkList::Sort(int const &type , int const &thuTu) {
 	type_sort = type;
+	thuTu_sort = thuTu;
 	MergeSort(&roots);
 }
 

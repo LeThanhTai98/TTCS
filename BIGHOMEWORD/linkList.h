@@ -46,6 +46,8 @@ private:
 	void  MergeSort(tree_node** headRef);
 
 	bool soSanhNgayThangNam(nhanvien data1, nhanvien data2);
+
+	bool soSanhNhanVien(tree_node *a, tree_node *b);
 public:
 	~linkList();
 	linkList();
@@ -77,7 +79,7 @@ public:
 
 
 	// goi sort 1 de sort theo luong , 2 chuc vu , 3 ngay thang nam sinh 
-	void  Sort(const int&);
+	void  Sort(const int& , const int&);
 
 
 
