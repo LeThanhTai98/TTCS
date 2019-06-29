@@ -20,7 +20,8 @@ private:
 	//phan tu dau list
 	
 	tree_node *roots;
-
+	//thu sap xep tang dap / giam dan 
+	int thuTu_sort;
 	//tieu chi sap xep 
 	int type_sort;
 	//so ky tu toi da cua ten 
@@ -44,6 +45,7 @@ private:
 	// merge sort hop vs link list theo tim hieu la vay 
 	void  MergeSort(tree_node** headRef);
 
+	bool soSanhNgayThangNam(nhanvien data1, nhanvien data2);
 public:
 	~linkList();
 	linkList();

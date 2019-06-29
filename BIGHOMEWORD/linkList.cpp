@@ -49,14 +49,14 @@ int sosanhten(string ten1, string ten2,string hoten1 , string hoten2) {
 	return 0;
 }
 
+bool linkList::soSanhNgayThangNam(nhanvien data1, nhanvien data2) {
 
-bool soSanhNgayThangNam(nhanvien data1 , nhanvien data2) {
 	if (data1.ngaythangnamsinh[2] < data2.ngaythangnamsinh[2]) {
 		return true;
 	}
 	else if (data1.ngaythangnamsinh[2] > data2.ngaythangnamsinh[2]) {
 		return false;
-		
+
 	}
 	else if (data1.ngaythangnamsinh[1] < data2.ngaythangnamsinh[1]) {
 		return true;
@@ -70,14 +70,15 @@ bool soSanhNgayThangNam(nhanvien data1 , nhanvien data2) {
 	else if (data1.ngaythangnamsinh[0] > data2.ngaythangnamsinh[0]) {
 		return false;
 	}
-	else if (sosanhten(data1.ten,data2.ten, data1.ho_va_ten , data2.ho_va_ten) <= 0) {
-		return true;
+	else if (sosanhten(data1.ten, data2.ten, data1.ho_va_ten, data2.ho_va_ten) <= 0) {
+		if (thuTu_sort == 1)return true;
+		else return false;
 	}
-	return false;
+	if (thuTu_sort == 1) return false;
+	else return true;
 }
-
-
-
+return false;
+}
 
 
 void FrontBackSplit(tree_node* source, tree_node** frontRef, tree_node** backRef);
