@@ -751,7 +751,7 @@ int linkList::search(string txt, string pat)
 			i = i + 1;
 		else
 			i = i + j; // slide the pattern by j  
-		if (i==(N-M)+1)
+		if (i==(N-M+1))
 		{
 			return 0;
 		}
@@ -830,7 +830,7 @@ void linkList::removeAfter(linkList &l,tree_node *t)
 		}
 	}
 }
-void linkList::RemoveKey(linkList &l, string key) 
+void linkList::RemoveKeyChucvu(linkList &l, string key) 
 {
 		if (!l.roots)
 			cout << "Danh sach rong!" << endl;
@@ -850,11 +850,10 @@ void linkList::RemoveKey(linkList &l, string key)
 					removeAfter(l, before);
 			}
 		}
-		//tree = tree->left
 }
 
 
-void linkList::RemoveDupNode(linkList &l,string cv)
+void linkList::deleteChucvu(linkList &l,string cv)
 {
 	tree_node *p, *q, *t;
 	p = l.roots;
@@ -864,7 +863,8 @@ void linkList::RemoveDupNode(linkList &l,string cv)
 		q = p->left;
 		while (q != NULL)
 		{
-			if (q->left != NULL && q->data.chucvu_chu == cv)
+			//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.chucvu_chu == cv)
 			{
 				removeAfter(l, t);
 				q = t->left;
@@ -877,54 +877,482 @@ void linkList::RemoveDupNode(linkList &l,string cv)
 		}
 		p = p->left;
 	}
-	//removeTail(l);
-	RemoveKey(l, cv);
-	RemoveKey(l,cv);
+	RemoveKeyChucvu(l, cv);
 }
-void linkList::deleteChucvu(string cv)
+
+
+//void linkList::deleteChucvu(string cv)
+//{
+//	tree_node *tree = roots;
+//	//tree_node *t1 = NULL;
+//	//tree_node *t2 = NULL;
+//	//while(tree != NULL)
+//	//{
+//	//	
+//	//	tree = tree->left;
+//	//}
+//
+//
+//	//tree_node *t1 = NULL;
+//	//tree_node *t2 = NULL;
+//	//while (tree != NULL)
+//	//{
+//
+//
+//	//	if (roots->data.chucvu_chu == cv)
+//	//	{
+//	//		roots = roots->left;
+//	//		//return;
+//	//	}
+//	//	t1 = roots;
+//	//	while (t1->left != NULL && t1->data.chucvu_chu != cv)
+//	//	{
+//	//		t2 = t1;
+//	//		t1 = t1->left;
+//	//	}
+//
+//	//	if (t1->left !=NULL && t1->data.chucvu_chu == cv)
+//	//	{
+//	//		t2->left = t2->left->left;
+//	//		free(t1);
+//	//		//return;
+//	//	}
+//
+//	//	else
+//	//	{
+//	//		cout << "Khong tim thay " << cv << " trong danh sach"<<endl;
+//	//	}
+//	//	tree = tree->left;
+//	//}
+//	//return;
+//}
+void linkList::RemoveKeyLuong(linkList &l, double key)
 {
-	tree_node *tree = roots;
-	//tree_node *t1 = NULL;
-	//tree_node *t2 = NULL;
-	//while(tree != NULL)
-	//{
-	//	
-	//	tree = tree->left;
-	//}
-
-
-	//tree_node *t1 = NULL;
-	//tree_node *t2 = NULL;
-	//while (tree != NULL)
-	//{
-
-
-	//	if (roots->data.chucvu_chu == cv)
-	//	{
-	//		roots = roots->left;
-	//		//return;
-	//	}
-	//	t1 = roots;
-	//	while (t1->left != NULL && t1->data.chucvu_chu != cv)
-	//	{
-	//		t2 = t1;
-	//		t1 = t1->left;
-	//	}
-
-	//	if (t1->left !=NULL && t1->data.chucvu_chu == cv)
-	//	{
-	//		t2->left = t2->left->left;
-	//		free(t1);
-	//		//return;
-	//	}
-
-	//	else
-	//	{
-	//		cout << "Khong tim thay " << cv << " trong danh sach"<<endl;
-	//	}
-	//	tree = tree->left;
-	//}
-	//return;
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.luong != key)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots)
+				removeHead(l);
+			else
+				removeAfter(l, before);
+		}
+	}
 }
-// xóa cuối thì thêm vào không được // đã sử lí ở điều kiện không được trỏ tới NULL
-// xóa vị trí thứ 2 không được
+void linkList::RemoveKeyHoTen(linkList &l, string key)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && search(result->data.ho_va_ten,key) != 1)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots)
+				removeHead(l);
+			else
+				removeAfter(l, before);
+		}
+	}
+}
+void linkList::RemoveKeyNgay(linkList &l, int key)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[0] != key)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots)
+				removeHead(l);
+			else
+				removeAfter(l, before);
+		}
+	}
+}
+void linkList::RemoveKeyThang(linkList &l, int key)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[1] != key)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots)
+				removeHead(l);
+			else
+				removeAfter(l, before);
+		}
+	}
+}
+void linkList::RemoveKeyNam(linkList &l, int key)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[2] != key)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots)
+				removeHead(l);
+			else
+				removeAfter(l, before);
+		}
+	}
+}
+void linkList::RemoveKeyNgayThang(linkList &l, int ngay, int thang)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[1] != thang)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[1] != thang)
+				removeHead(l);
+			else if (result->data.ngaythangnamsinh[0] == ngay && result->data.ngaythangnamsinh[1] == thang)
+			{
+				removeAfter(l, before);
+			}
+		}
+	}
+}
+void linkList::RemoveKeyNgayNam(linkList &l, int ngay, int nam)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[2] != nam)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[2] != nam)
+				removeHead(l);
+			else if (result->data.ngaythangnamsinh[0] == ngay && result->data.ngaythangnamsinh[2] == nam)
+			{
+				removeAfter(l, before);
+			}
+		}
+	}
+}
+void linkList::RemoveKeyThangNam(linkList &l, int thang, int nam)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[1] != thang && result->data.ngaythangnamsinh[2] != nam)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots && result->data.ngaythangnamsinh[1] != thang && result->data.ngaythangnamsinh[2] != nam)
+				removeHead(l);
+			else if (result->data.ngaythangnamsinh[1] == thang && result->data.ngaythangnamsinh[2] == nam)
+			{
+				removeAfter(l, before);
+			}
+		}
+	}
+}
+void linkList::RemoveKeyNgayThangNam(linkList &l, int ngay, int thang, int nam)
+{
+	if (!l.roots)
+		cout << "Danh sach rong!" << endl;
+	else
+	{
+		tree_node *result = l.roots, *before = NULL;
+		while (result && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[1] != thang && result->data.ngaythangnamsinh[2] != nam)
+		{
+			before = result;
+			result = result->left;
+		}
+		if (result)
+		{
+			if (result == l.roots && result->data.ngaythangnamsinh[0] != ngay && result->data.ngaythangnamsinh[1] != thang && result->data.ngaythangnamsinh[2] != nam)
+				removeHead(l);
+			else if (result->data.ngaythangnamsinh[0] == ngay && result->data.ngaythangnamsinh[1] == thang && result->data.ngaythangnamsinh[2] == nam)
+			{
+				removeAfter(l, before);
+			}
+		}
+	}
+}
+
+
+void linkList::deleteLuong(linkList &l, double cv)
+{
+	tree_node *p, *q, *t;
+	p = l.roots;
+	while (p != NULL)
+	{
+		t = p;
+		q = p->left;
+		while (q != NULL)
+		{
+			//if (q->left != NULL && q->data.chucvu_chu == cv)
+			if (q->data.luong == cv)
+			{
+				removeAfter(l, t);
+				q = t->left;
+			}
+			else
+			{
+				t = q;
+				q = q->left;
+			}
+		}
+		p = p->left;
+	}
+	RemoveKeyLuong(l, cv);
+}
+void linkList::deleteHoTen(linkList &l, string cv)
+{
+	tree_node *p, *q, *t;
+	p = l.roots;
+	while (p != NULL)
+	{
+		t = p;
+		q = p->left;
+		while (q != NULL)
+		{
+			//if (q->left != NULL && q->data.chucvu_chu == cv)
+			if (search(q->data.ho_va_ten, cv) == 1)
+			{
+				removeAfter(l, t);
+				q = t->left;
+			}
+			else
+			{
+				t = q;
+				q = q->left;
+			}
+		}
+		p = p->left;
+	}
+	RemoveKeyHoTen(l, cv);
+}
+void linkList::deleteNgaySinh(linkList &l, int ngay, int thang, int nam)
+{
+	tree_node *p, *q, *t;
+	p = l.roots;
+	if (ngay == 0 && thang != 0 && nam != 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[1] == thang && q->data.ngaythangnamsinh[2] == nam)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyThangNam(l,thang,nam);
+	}
+
+	if (thang == 0 && ngay != 0 && nam != 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[0] == ngay && q->data.ngaythangnamsinh[2] == nam)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyNgayNam(l,ngay,nam);
+	}
+
+	if (nam == 0 && ngay != 0 && thang != 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[0] == ngay && q->data.ngaythangnamsinh[1] == thang)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyNgayThang(l,ngay,thang);
+	}
+
+	if (ngay == 0 && thang == 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[2] == nam)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyNam(l,nam);
+	}
+
+	if (ngay == 0 && nam == 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[1] == thang)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyThang(l,thang);
+	}
+
+	if (thang == 0 && nam == 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[0] == ngay)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyNgay(l,ngay);
+	}
+
+	if (ngay != 0 && thang != 0 && nam != 0)
+	{
+		while (p != NULL)
+		{
+			t = p;
+			q = p->left;
+			while (q != NULL)
+			{
+				//if (q->left != NULL && q->data.chucvu_chu == cv)
+				if (q->data.ngaythangnamsinh[0] == ngay && q->data.ngaythangnamsinh[1] == thang && q->data.ngaythangnamsinh[2] == nam)
+				{
+					removeAfter(l, t);
+					q = t->left;
+				}
+				else
+				{
+					t = q;
+					q = q->left;
+				}
+			}
+			p = p->left;
+		}
+		RemoveKeyNgayThangNam(l,ngay,thang,nam);
+	}
+}

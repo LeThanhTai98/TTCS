@@ -99,9 +99,21 @@ public:
 	void removeHead(linkList &l);
 	void removeTail(linkList &l);
 	void removeAfter(linkList &l, tree_node *t);
-	void RemoveKey(linkList &l, string key);
-	void RemoveDupNode(linkList &l, string cv);
-	void deleteChucvu(string cv);
+	void RemoveKeyChucvu(linkList &l, string key);
+	void RemoveKeyLuong(linkList &l, double key);
+	void RemoveKeyHoTen(linkList &l, string key);
+	void RemoveKeyNgay(linkList &l, int key);
+	void RemoveKeyThang(linkList &l, int key);
+	void RemoveKeyNam(linkList &l, int key);
+	void RemoveKeyNgayThang(linkList &l, int ngay,int thang);
+	void RemoveKeyNgayNam(linkList &l, int ngay, int nam);
+	void RemoveKeyThangNam(linkList &l, int thang, int nam);
+	void RemoveKeyNgayThangNam(linkList &l,int ngay, int thang, int nam );
+	void deleteChucvu(linkList &l, string cv);
+	void deleteLuong(linkList &l, double cv);
+	void deleteHoTen(linkList &l, string cv);
+	void deleteNgaySinh(linkList &l,int ngay, int thang, int nam);
+	//void deleteChucvu(string cv);
 
 	friend class xuatNhapFile;
 	
