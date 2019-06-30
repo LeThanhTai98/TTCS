@@ -548,7 +548,7 @@ void linkList::searchLuong(double cv) {
 		tree = tree->left;
 		i++;
 	}
-	 cout << "Khong tim thay" << endl;
+		cout << endl;
 }
 
 // Tìm kiếm theo Chức Vụ
@@ -566,7 +566,7 @@ void linkList::searchChucVu(string cv) {
 		tree = tree->left;
 		i++;
 	}
-	 cout << "Khong tim thay" << endl;
+	 cout <<endl;
 }
 
 // Tìm kiếm theo ngày tháng năm sinh
@@ -665,7 +665,7 @@ void linkList::searchNTN(int ngay, int thang, int nam) {
 		}
 	}
 	
-
+	cout << endl;
 }
 
 // Tìm kiếm theo họ và tên
@@ -680,21 +680,20 @@ int linkList::search(string txt, string pat)
 	{
 		int j;
 
-		/* For current index i, check for pattern match */
 		for (j = 0; j < M; j++)
 			if (txt[i + j] != pat[j])
 				break;
 
-		if (j == M) // if pat[0...M-1] = txt[i, i+1, ...i+M-1]  
+		if (j == M) 
 		{
-			//cout << "Pattern found at index " << i << endl;
+			//cout << "Vi tri xuat hien " << i << endl;
 			return 1;
 			//i = i + M;
 		}
 		else	if (j == 0)
 			i = i + 1;
 		else
-			i = i + j; // slide the pattern by j  
+			i = i + j; 
 		if (i==(N-M+1))
 		{
 			return 0;
@@ -717,7 +716,7 @@ void linkList::searchHoTen(string cv)
 		i++;
 	}
 	 
-
+	cout << endl;
 }
 
 
@@ -727,7 +726,7 @@ void linkList::removeHead(linkList &l)
 	tree_node *last = l.getLast();
 	if (!l.roots)
 	{
-		cout << "Danh sach rong!";
+		cout << "Danh sach rong!"<<endl;
 	}
 	else if (l.roots==last)
 	{
