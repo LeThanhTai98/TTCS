@@ -82,6 +82,7 @@ bool coPhaiLaSo(string dauVao) {
 	char* p;
 	string kt;
 	int soPhanTu = dauVao.size();
+	if (soPhanTu <= 0) return false;
 	if (soPhanTu > 3) soPhanTu = 3;
 	for (int i = 0;i < soPhanTu; i++) {
 		kt += (dauVao[i] >= 'A' and dauVao[i] <= 'Z') ? dauVao[i] + 32 : dauVao[i];
