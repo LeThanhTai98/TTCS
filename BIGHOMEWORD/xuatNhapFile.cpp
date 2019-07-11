@@ -107,7 +107,7 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 	string line;
 	ifstream myfile(duongDanFile);
 	string temps;
-	double  temp[10];
+	
 	int i = 0;
 	int dem = 0;
 	if (myfile.is_open())
@@ -131,13 +131,18 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 							// doc toi khi gap |
 							if (c == '|') {
 								int chucvu_so = 0;
-								int doiSangInt = stoi(temps);
-								temp[i] = doiSangInt;
-								chucvu_so = doiSangInt;
-								chuc_nhanvien.push_back(make_pair(chucvu_so, chucvu_chu));
-								i++;
-								dem++;
-								break;
+								if (coPhaiLaSo(temps)) {
+									int doiSangInt = stoi(temps);
+									
+									chucvu_so = doiSangInt;
+									chuc_nhanvien.push_back(make_pair(chucvu_so, chucvu_chu));
+									i++;
+									dem++;
+									break;
+								}
+								else {
+									return 0;
+								}
 							}
 							temps += c;
 						}
@@ -151,7 +156,9 @@ int xuatNhapFile::nhapFile(string duongDanFile, linkList &root, vector< pair<int
 			if (c == '+') break;
 		}
 		int soLuongChucVu = i;
-
+		if (chuc_nhanvien.size() == 0) {
+			return 0;
+		}
 		// doc thu tu ho va ten  | luong | chuc vu | ngay thang nam sinh |
 		int dem_break = 0;
 		string tieuDe = "";
