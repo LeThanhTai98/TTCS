@@ -69,7 +69,7 @@ public:
 	void in_file();
 
 	//xoa link list 
-	void deleteList(tree_node** headRef);
+	void deleteList();
 	// show nhan vien ra
 	void show_1();
 	//show ra khung

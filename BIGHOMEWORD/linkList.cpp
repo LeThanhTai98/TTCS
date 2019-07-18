@@ -180,7 +180,7 @@ ostream& operator<<(ostream& os, const nhanvien& item);
 linkList::linkList() { roots = NULL;type_sort = 0;max_ten = 11; max_luong = 13;max_chucvu = 11;max_ngay = 21;max_tongSoLuonPhanTu = 5; }
 
 linkList::~linkList() {
-	deleteList(&roots);
+	deleteList();
 }
 
 void linkList::insert(nhanvien item) {
@@ -499,15 +499,15 @@ void linkList::Sort(int const &type , int const &thuTu) {
 	MergeSort(&roots);
 }
 
-void linkList::deleteList(tree_node** headRef) {
-	tree_node* current = *headRef;
+void linkList::deleteList() {
+	tree_node* current = roots;
 	tree_node* left;
 	while (current != NULL) {
 		left = current->left;
 		delete(current);
 		current = left;
 	}
-	*headRef = NULL;
+	roots = NULL;
 }
 
 
